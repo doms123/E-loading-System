@@ -1,0 +1,22 @@
+GMAIL Account
+email:loadtopup01@gmail.com
+pass: loadpass123
+
+Paypal Personal Account
+email: loadtopup01@gmail.com
+pass: Loadpass123!
+
+Business / Receiver
+email: loadtopup01-facilitator@gmail.com
+pass: Loadpass123!
+
+Buyer
+email: loadtopup01-buyer@gmail.com
+pass: Loadpass123!
+
+Paypal Tuts
+https://www.codexworld.com/paypal-payment-gateway-integration-in-codeigniter/
+
+Reference Website
+http://easy-reload.com/
+
