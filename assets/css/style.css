@@ -308,6 +308,11 @@ input:focus ~ .highlight {
 	padding-left: 0;
 }
 
+.close-jq-toast-single,
+.jq-toast-heading {
+	display: none;
+}
+
 @media only screen and (max-width : 1220px) and (min-width: 758px) {
 	.rightHead {
 		right: 15px;
@@ -363,7 +368,7 @@ input:focus ~ .highlight {
 	}
 
 	.loadingForm {
-		padding-top: 64px;
+		padding-top: 62px;
 	}
 
 	.loadingForm h3 {

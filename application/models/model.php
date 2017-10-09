@@ -1,7 +1,7 @@
 <?php 
 class Model extends CI_Model {
 	public function getLogin($email, $pass) {
-		$sql = "SELECT email, firstname, lastname, mobile FROM tbl_user WHERE email = ? AND password = ? LIMIT 1";
+		$sql = "SELECT userId, email, firstname, lastname, mobile FROM tbl_user WHERE email = ? AND password = ? LIMIT 1";
 		$data = array($email, $pass);
 		return $this->db->query($sql, $data);
 	}
@@ -34,5 +34,18 @@ class Model extends CI_Model {
 		$sql = "SELECT * FROM tbl_netprefix WHERE networkId = ? AND isActive = ?";
 		$data = array($networkId, 1);
 		return $this->db->query($sql, $data);
+	}
+
+	public function getNetworkName($networkId) {
+		$sql = "SELECT netName FROM tbl_network WHERE networkId = ? AND netIsActive = ?";
+		$data = array($networkId, 1);
+		return $this->db->query($sql, $data)->row()->netName;
+	}
+
+	public function getPaymentTransact($getSenderUserId, $getAmount, $getNetworkId, $getMobileNo) {
+		$sql = "INSERT INTO tbl_payment(`senderUserId`, `loadAmount`, `networkId`, `paymentStatus`, `paymentDate`, `mobileno`)VALUES(?,?,?,?,?,?)";
+		$data = array($getSenderUserId, $getAmount, $getNetworkId, 1, today(), $getMobileNo);
+		$this->db->query($sql, $data);
+	 	return $this->db->insert_id();
 	}
 }

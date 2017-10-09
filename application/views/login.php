@@ -42,7 +42,7 @@
 					</div>
 				</div>
 				<div class="alert alert-danger hidden" role="alert">
-				  <i class="ion-alert-circled"></i> Invalid Email and Password
+				  <i class="ion-alert-circled"></i> Invalid Email or Password
 				</div>
 			</div>
 		</form>

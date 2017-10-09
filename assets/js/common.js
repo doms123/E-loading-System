@@ -43,3 +43,19 @@ $(".logout").click(function() {
 		}
 	});
 });
+
+$(function() {
+	if($(window).width() > 767) {
+		$toastWidth = $(window).width() / 4;
+		var css = `
+			<style>
+				.jq-toast-wrap {
+					width: ${$toastWidth}px
+				}
+			</style>
+		`;
+		$("section").append(css);
+	}else {
+		$("section").find("style").remove();
+	}
+});
