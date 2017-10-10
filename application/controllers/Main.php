@@ -44,7 +44,8 @@ class Main extends CI_Controller {
 			$this->session->set_userdata($userData);
 
 			$data = array(
-				'success' => 1
+				'success' => 1,
+				'userData' => $getLogin->row()
 			);
 		}else {
 			$data = array(
@@ -244,5 +245,56 @@ class Main extends CI_Controller {
 		$approvalUrl = $payment->getApprovalLink();
 
 		header("location:".$approvalUrl);
+	}
+
+	public function loadTransaction() {
+		$userId = $this->session->userdata('userId');
+		$getLoadTransaction = $this->model->getLoadTransaction($userId);
+
+		$data = array(
+			'result' => $getLoadTransaction->result()
+		);
+
+		generate_json($data);
+	}
+
+	public function dashboardAdmin() {
+		$this->load->view('dashboard-admin');
+	}
+
+	public function loadRequest() {
+		$this->load->view('load-request');
+	}
+
+	public function viewRequest() {
+		$requestSearch = sanitize($this->input->post('requestSearch'));
+		$getLoadRequest = $this->model->getLoadRequest($requestSearch);
+
+		$data = array(
+			'result' => $getLoadRequest->result()
+		);
+
+		generate_json($data);
+	}
+	
+	public function confirmRequest() {
+		$requestId = sanitize($this->input->post('requestId'));
+		$getConfirmRequest = $this->model->getConfirmRequest($requestId);
+
+		$data = array(
+			'success' => 1
+		);
+
+		generate_json($data);
+	}
+
+	public function loadReqCount() {
+		$getLoadReqCount = $this->model->getLoadReqCount();
+
+		$data = array(
+			'reqCount' => $getLoadReqCount->row()->reqCount
+		);
+
+		generate_json($data);
 	}
 }

@@ -13,6 +13,31 @@ $(function() {
 		}
 	}
 
+	function numberWithCommas(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
+	$(".loadingForm").fadeIn(800);
+
+	var toggleNav = false;
+	$(".dashNav").click(function() {
+		toggleNav = !toggleNav;
+		console.log(toggleNav);
+
+		if(toggleNav) { // transaction history
+			$(this).find('i').attr('class', 'ion-android-system-back');
+			$(this).find('span').text('Back');
+			$(".compCardloading").hide();
+			$(".transactionWrap").fadeIn(800);
+			loadTransaction();
+		}else {
+			$(this).find('i').attr('class', 'ion-clipboard');
+			$(this).find('span').text('Transaction History');
+			$(".transactionWrap").hide();
+			$(".compCardloading").fadeIn(800);
+		}
+	});
+
 	if(getParam('paymentSuccess') == 1) {
 		$.toast({
 		    heading: 'Success',
@@ -80,4 +105,44 @@ $(function() {
 		}, 1000);
 		$(this).find('i').attr('class', 'ion-loading-a');
 	});
+
+	loadTransaction();
+	function loadTransaction() {
+		$.ajax({
+			type: 'POST',
+			url: baseUrl+'Main/loadTransaction', 
+			crossDomain:true, 
+			success : function(data) {
+				console.log('data', data);
+				var data = data.result;
+				var maxLoop = data.length;
+				var html = "";
+
+				for(x = 0; x < maxLoop; x++) {
+					html += '<tr>';
+						html += '<td>'+data[x].netName+'</td>';
+						html += '<td>'+data[x].mobileno+'</td>';
+						html += '<td>'+numberWithCommas(data[x].loadAmount)+'</td>';
+						html += '<td>'+data[x].dateAdded+'</td>';
+					html += '</tr>';
+				}
+
+				if(maxLoop > 0) {
+					$(".historyBody").html(html);
+				}else {
+					$(".historyBody").html('<td colspan="4">No transaction history yet.</td>');
+				}
+
+				
+
+				$('.table').DataTable();
+
+				if(maxLoop == 0) {
+					$(".dataTables_paginate").hide();
+				}else {
+					$(".dataTables_paginate").show();
+				}
+			}
+		});
+	}
 });

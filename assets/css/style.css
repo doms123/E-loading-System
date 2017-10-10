@@ -53,7 +53,7 @@ header h1 a {
 	padding: 24px;
 }
 
-.compCardHeader {
+.compCardloading {
 	display: block;
     position: relative;
     border-radius: 2px;
@@ -73,7 +73,7 @@ header h1 a {
 	padding: 30px 24px 40px;
 }
 
-.compCardHeader h3 {
+.compCardloading h3 {
 	font-size: 24px;
 	margin-bottom: 40px;
 }
@@ -230,6 +230,7 @@ input:focus ~ .highlight {
     left: 0;
     right: 0;
     margin: auto;
+    position: absolute;
 }
 
 .jq-icon-error {
@@ -299,7 +300,7 @@ input:focus ~ .highlight {
 }
 
 .loadingForm {
-	max-width: 455px;
+	max-width: 600px;
 	margin: 0 auto;
 	padding-top: 140px;
 }
@@ -313,6 +314,118 @@ input:focus ~ .highlight {
 	display: none;
 }
 
+.table thead {
+	background: #1976d2;
+	color: #fff;
+}
+
+.paginate_button {
+	background: #1976d2;
+	color: #fff;
+	padding: 5px 10px;
+	cursor: pointer;
+	margin-left: 10px;
+	box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+.paginate_button:hover {
+	color: #fff;
+	text-decoration: none;
+	opacity: .7;
+}
+
+.transactionWrap h3 {
+	font-size: 24px;
+	margin-bottom: 40px;
+}
+
+.upperFirst {
+	text-transform:capitalize;
+}
+
+.reqLoadAmount,
+.reqUser,
+.modal-title {
+	font-weight: bold;
+}
+
+.loadingForm, .transactionWrap {
+	display: none;
+}
+
+.fsize12 {
+	font-size: 12px;
+}
+
+.modal-body p {
+	line-height: 1.4;
+}
+
+.modal-dialog {
+    max-width: 340px;
+}
+
+.modal-content {
+	border-radius: 0;
+}
+
+.dashNav {
+	display: inline-block;
+    float: right;
+    z-index: 99;
+    font-size: 14px;
+}
+
+.table td, .table th {
+	vertical-align: middle !important;
+}
+
+.signUpArea .compCardHeader h3,
+.loginArea .compCardHeader h3 {
+	font-size: 24px;
+	margin-bottom: 40px;
+}
+
+.contentArea {
+	padding: 100px 20px 0 275px;
+}
+
+.loadReqArea h3 {
+	font-size: 24px;
+	margin-bottom: 10px;
+}
+
+.loadReqArea table tr th:last-child,
+.loadReqArea table tr td:last-child {
+	text-align: center;
+}
+
+.loadReqArea table tr:nth-child(even) {
+    background: #f3f3f3;
+}
+
+.loadReqArea table tr:hover {
+	background: #dedede;
+}
+
+
+.loadReqArea table thead tr:hover {
+	background: #1976d2;
+}
+
+.loadReqArea .btnComplete {
+	font-size: 12px;
+	position: relative;
+}
+
+.table thead th {
+	border-bottom: none;
+}
+
+table.dataTable {
+	box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+}
+
 @media only screen and (max-width : 1220px) and (min-width: 758px) {
 	.rightHead {
 		right: 15px;
@@ -320,6 +433,30 @@ input:focus ~ .highlight {
 }
 
 @media only screen and (max-width : 767px) {
+	.dashNav {
+	    position: absolute;
+	    top: 120px;
+	    right: 15px;
+	}
+
+	.compCardloading > div {
+	    padding-top: 50px;
+	}
+
+	.transactionWrap > div {
+		padding-top: 30px;
+	}
+
+	.dataTables_info {
+		margin-bottom: 25px;
+		padding-top: 0 !important;
+	}
+
+	table.dataTable {
+		width: calc(100% - 30px);
+		margin: 0 auto;
+	}
+
 	.backBtn {
 		display: block;
 		font-size: 30px;
@@ -349,6 +486,7 @@ input:focus ~ .highlight {
 		font-size: 35px;
 		margin: 0;
 		padding: 0;
+		cursor: pointer;
 	}
 
 	.mobileMenu:hover {
@@ -370,9 +508,11 @@ input:focus ~ .highlight {
 	.loadingForm {
 		padding-top: 62px;
 	}
-
-	.loadingForm h3 {
-		font-size: 16px;
+	
+	.loginForm h3,
+	.loadingForm h3,
+	.signUpForm h3 {
+		font-size: 16px !important;
 	    color: #fff;
 	    margin-bottom: 30px;
 	    padding: 15px;
@@ -380,6 +520,18 @@ input:focus ~ .highlight {
 	}
 
 	.dashboardArea .compCard {
+		padding: 0;
+	}
+
+	.signUpForm .row {
+		margin: 0;
+	}
+
+	.compCardHeader .row {
+		margin: 0 15px;
+	}
+
+	.signUpForm .row div {
 		padding: 0;
 	}
 
@@ -397,11 +549,11 @@ input:focus ~ .highlight {
 	}
 
 	.loginArea, .signUpArea {
-		padding-top: 64px;
+		padding-top: 62px;
 	}
 
-	.loginArea .compCardHeader h3,
-	.signUpArea .compCardHeader h3  {
+	.loginArea .compCardloading h3,
+	.signUpArea .compCardloading h3  {
 	  	font-size: 16px;
 	    color: #fff;
 	    margin-bottom: 30px;
@@ -419,6 +571,7 @@ input:focus ~ .highlight {
 
 	.logout {
 		color: #000;
+		font-size: 14px;
 	}
 
 	.dropdown-menu {
@@ -446,7 +599,7 @@ input:focus ~ .highlight {
 		padding: 0 15px;
 	}
 
-	.compCardHeader .row {
+	.compCardloading .row {
 		margin: 0;
 	}
 
@@ -488,4 +641,139 @@ input:focus ~ .highlight {
 	.rightHead {
 		display: none;
 	}
+}
+
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background: #fff;
+    color: #000;
+    transition: all 0.3s;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    box-shadow: 3px 0 6px rgba(0,0,0,.24);
+    margin-top: 72px;
+}
+
+#sidebar.active {
+    margin-left: -250px;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+#sidebar ul.components {
+    padding: 0px 0 20px;
+}
+
+#sidebar ul p {
+    padding: 10px;
+    background: rgba(0,0,0,.32);
+    color: hsla(0,0%,100%,.87);
+}
+
+#sidebar ul li {
+	border-bottom: 1px solid rgba(0,0,0,.06);
+	position: relative;
+}
+
+.requestSearch {
+	position: absolute;
+	max-width: 200px;
+	width: 100%;
+	right: 20px;
+	top: 88px;
+}
+
+.loadReqCount {
+	position: absolute;
+	right: 10px;
+	display: none;
+	height: 17px;
+   	top: 0;
+   	bottom: 0;
+   	margin: auto;
+}
+
+#sidebar ul li a {
+    padding: 16px;
+    font-size: 1.1em;
+    display: block;
+    color: #000;
+}
+#sidebar ul li a:hover {
+    color: #1976d2;
+    text-decoration: none;
+}
+
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+    color: #000;
+    font-weight: 600;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.adminBody .rightHead {
+	right: 15px;
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
+}
+
+ul.CTAs {
+    padding: 20px;
+}
+
+ul.CTAs a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+a.download {
+    background: #fff;
+    color: #7386D5;
+}
+
+a.article, a.article:hover {
+    background: #6d7fcc !important;
+    color: #fff !important;
+}
+
+.adminBody {
+	background: #fafafa;
+}
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+@media (max-width: 767px) {
+    #sidebar {
+        margin-left: -250px;
+        margin-top: 62px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    #sidebarCollapse span {
+        display: none;
+    }
 }

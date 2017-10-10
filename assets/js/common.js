@@ -58,4 +58,30 @@ $(function() {
 	}else {
 		$("section").find("style").remove();
 	}
+
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+
+    loadReqCount();
+
+    function loadReqCount() {
+    	$.ajax({
+    		type: 'POST',
+    		url: baseUrl + 'Main/loadReqCount',
+    		data: {},
+    		success: function(data) {
+    			if(data.reqCount > 0) {
+    				$(".loadReqCount").show();
+    				$(".loadReqCount").text(data.reqCount);
+    			}else {
+    				$(".loadReqCount").hide();
+    			}
+
+    			setTimeout(function() {
+    				loadReqCount();
+    			}, 5000);
+    		}
+    	});
+    }
 });

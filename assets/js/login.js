@@ -15,7 +15,18 @@ $(function() {
 			success : function(data) {
 				$(".btnLogin").attr('disabled', false);
 				if(data.success == 1) {
-					window.location.href = '/Main/dashboard';
+					var data = data.userData;
+					console.log('data', data);
+					if(data.positionId == 1) {
+						window.location.href = '/Main/dashboardAdmin';
+					}else {
+						window.location.href = '/Main/dashboard';
+					}
+					// if(data.positionId == 1) {
+					// 	window.location.href = '/Main/dashboard_admin';
+					// }else {
+					// 	window.location.href = '/Main/dashboard';
+					// }
 				}else {
 					$(".loginForm .alert").fadeIn();
 

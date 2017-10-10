@@ -1,7 +1,7 @@
 <?php 
 class Model extends CI_Model {
 	public function getLogin($email, $pass) {
-		$sql = "SELECT userId, email, firstname, lastname, mobile FROM tbl_user WHERE email = ? AND password = ? LIMIT 1";
+		$sql = "SELECT userId, email, firstname, lastname, mobile, positionId FROM tbl_user WHERE email = ? AND password = ? LIMIT 1";
 		$data = array($email, $pass);
 		return $this->db->query($sql, $data);
 	}
@@ -47,5 +47,46 @@ class Model extends CI_Model {
 		$data = array($getSenderUserId, $getAmount, $getNetworkId, 1, today(), $getMobileNo);
 		$this->db->query($sql, $data);
 	 	return $this->db->insert_id();
+	}
+
+	public function getLoadTransaction($userId) {
+		$sql = "SELECT p.mobileno, p.loadAmount, n.netName, DATE_FORMAT(p.paymentDate, '%b. %e %Y') AS dateAdded
+				FROM tbl_payment p 
+				INNER JOIN tbl_user u ON u.userId = p.senderUserId
+				INNER JOIN tbl_network n 
+				ON n.networkId = p.networkId
+				WHERE senderUserId = ?
+				ORDER BY paymentDate DESC";
+		$data = array($userId);
+		return $this->db->query($sql, $data);
+	}
+
+	public function getLoadRequest($requestSearch) {
+
+		$sql = "SELECT p.mobileno, p.loadAmount, n.netName, u.firstname, u.lastname, p.paymentId, DATE_FORMAT(p.paymentDate, '%b. %e %Y') AS dateAdded
+				FROM tbl_payment p 
+				INNER JOIN tbl_user u ON u.userId = p.senderUserId
+				INNER JOIN tbl_network n
+				ON n.networkId = p.networkId
+				WHERE paymentStatus = 1";
+
+		if($requestSearch != '') {
+			$sql .= " AND mobileno = '%$requestSearch%' ";
+		}
+
+		$sql .= " ORDER BY paymentDate DESC";
+		return $this->db->query($sql);
+	}
+
+	public function getConfirmRequest($requestId) {
+		$sql = "UPDATE tbl_payment SET paymentStatus = ?, completeDate = ? WHERE paymentId = ?";
+		$data = array(2, today(), $requestId);
+		return $this->db->query($sql, $data);
+	}
+
+	public function getLoadReqCount() {
+		$sql = "SELECT COUNT(paymentId) as reqCount FROM tbl_payment WHERE paymentStatus = ?";
+		$data = array(1);
+		return $this->db->query($sql, $data);
 	}
 }
