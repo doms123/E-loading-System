@@ -1,23 +1,23 @@
 <?php $this->load->view('includes/header-admin'); ?>
-<section class="loadReqArea">
+<section class="usersArea">
 	<nav id="sidebar">
 	    <ul class="list-unstyled components">
 	        <p>Main Navigation</p>
 	        <li>
 	            <a href="<?php echo base_url('Main/dashboardAdmin'); ?>">Dashboard</a>
 	        </li>
-	        <li class="active">
+	        <li>
 	            <a href="<?php echo base_url('Main/loadRequest'); ?>">Load Request <span class="badge badge-danger loadReqCount">8</span></a>
 	        </li>
 	        <p>System Settings</p>
-			<li>
+			<li class="active">
 	            <a href="<?php echo base_url('Main/users'); ?>">Users</a>
 	        </li>
 	        <li>
 	            <a href="<?php echo base_url('Main/network'); ?>">Network Telecom</a>
 	        </li>
 	        <li>
-	            <a href="<?php echo base_url('Main/loadamount'); ?>">Load Amount</a>
+	        	<a href="<?php echo base_url('Main/loadamount'); ?>">Load Amount</a>
 	        </li>
 	        <li>
 	            <a href="<?php echo base_url('Main/numberPrefix'); ?>">Number Prefix</a>
@@ -29,20 +29,19 @@
 	</nav>
 	<div class="contentArea">
 		<div>
-			<h3>Request List</h3>
-			<input type="text" class="form-control requestSearch" placeholder="Search Filter">
+			<h3>Users List</h3>
+			<input type="text" class="form-control userSearch" placeholder="Search Filter">
 			<table class="table table-responsive">
 				<thead>
 					<tr>
-						<th>Network</th>
-						<th>Mobile No.</th>
-						<th>Load Amount</th>
-						<th>User Requested</th>
-						<th>Date</th>
-						<th>Action</th>
+						<th>Full name</th>
+						<th>Email Address</th>
+						<th>Mobile no.</th>
+						<th>Address</th>
+						<th>Date Registered</th>
 					</tr>
 				</thead>
-				<tbody class="requestBody">
+				<tbody class="usersBody">
 					<tr>
 						<td colspan="6">loading . . .</td>
 					</tr>
@@ -73,4 +72,4 @@
 </div>
 
 <?php $this->load->view('includes/footer'); ?>
-<script src="<?php echo base_url('assets/js/load-request.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/users.js'); ?>"></script>

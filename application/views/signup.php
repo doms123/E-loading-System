@@ -36,10 +36,29 @@
 							</div>
 							<div class="col-md-6">
 								<div class="group">      
+								    <input type="text" class="mobile required" onkeypress="return checkNumeric()" required>
+								    <span class="highlight"></span>
+								    <span class="bar"></span>
+								    <label>Mobile number (ex. 09123456789)</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-md-6">
+								<div class="group">      
 								    <input type="password" class="pass required" required>
 								    <span class="highlight"></span>
 								    <span class="bar"></span>
 								    <label>Password</label>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="group">      
+								    <input type="password" class="repass required" required>
+								    <span class="highlight"></span>
+								    <span class="bar"></span>
+								    <label>Re-enter Password</label>
 								</div>
 							</div>
 						</div>
@@ -64,15 +83,7 @@
 						</div>
 				
 						<div class="row">
-							<div class="col-md-6">
-								<div class="group">      
-								    <input type="text" class="mobile required" required>
-								    <span class="highlight"></span>
-								    <span class="bar"></span>
-								    <label>Mobile number</label>
-								</div>
-							</div>
-							<div class="col-md-6">
+							<div class="col-md-12">
 								<div class="group">      
 								    <input type="text" class="address required" required>
 								    <span class="highlight"></span>
@@ -95,6 +106,7 @@
 		</form>
 	</section>
 <script src="<?php echo base_url('assets/js/jquery-2.2.4.min.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/ripple.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/popper.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/common.js'); ?>"></script>

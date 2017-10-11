@@ -157,6 +157,12 @@ class Main extends CI_Controller {
 		generate_json($data);
 	}
 
+	public function systemLogout() {
+		$this->session->sess_destroy();
+
+		header("location:".base_url());
+	}
+
 	public function networkPrefix() {
 		$networkId = sanitize($this->input->post('networkId'));
 
@@ -297,4 +303,182 @@ class Main extends CI_Controller {
 
 		generate_json($data);
 	}
+
+	public function users() {
+		$this->load->view('users');
+	}
+
+	public function loadUsers() {
+		$userId = $this->session->userdata('userId');
+		$userSearch = sanitize($this->input->post('userSearch'));
+
+		$getLoadUsers = $this->model->getLoadUsers($userId, $userSearch);
+
+		$data = array(
+			'result' => $getLoadUsers->result()
+		);
+
+		generate_json($data);
+	}
+
+	public function network() {
+		$this->load->view('network');
+	}
+
+	public function loadNetwork() {
+		$getLoadNetwork = $this->model->getLoadAllNetwork();
+
+		$data = array(
+			'result' => $getLoadNetwork->result()
+		);
+
+		generate_json($data);
+	}
+
+	public function addNetwork() {
+		$netName = sanitize($this->input->post('netName'));
+
+		$getAddNetwork = $this->model->getAddNetwork($netName);
+
+		$data = array(
+			'success' => 1
+		);
+
+		generate_json($data);
+	}
+
+	public function editNetwork() {
+		$netName = sanitize($this->input->post('netName'));
+		$netId = sanitize($this->input->post('netId'));
+
+		$getEditNetwork = $this->model->getEditNetwork($netName, $netId);
+
+		$data = array(
+			'success' => 1
+		);
+
+		generate_json($data);
+	}
+
+	public function deleteNetwork() {
+		$deleteId = sanitize($this->input->post('deleteId'));
+
+		$getDeleteNetwork = $this->model->getDeleteNetwork($deleteId);
+
+		$data = array(
+			'success' => 1
+		);
+
+		generate_json($data);
+	}
+
+	public function loadamount() {
+		$this->load->view('loadamount');
+	}
+
+	public function loadAllAmount() {
+		$getLoadAmount = $this->model->getLoadAllAmounts();
+
+		$data = array(
+			'result' => $getLoadAmount->result()
+		);
+
+		generate_json($data);
+	}
+
+	public function addAmount() {
+		$loadAmount = sanitize($this->input->post('loadAmount'));
+
+		$getAddAmount = $this->model->getAddAmount($loadAmount);
+
+		$data = array(
+			'success' => 1
+		);
+
+		generate_json($data);
+	}
+
+	public function editAmount() {
+		$editId = sanitize($this->input->post('editId'));
+		$amount = sanitize($this->input->post('amount'));
+
+		$getEditAmount = $this->model->getEditAmount($editId, $amount);
+
+		$data = array(
+			'success' => 1
+		);
+
+		generate_json($data);
+	}
+
+	public function deleteAmount() {
+		$deleteId = sanitize($this->input->post('deleteId'));
+
+		$getDeleteAmount = $this->model->getDeleteAmount($deleteId);
+
+		$data = array(
+			'success' => 1
+		);
+
+		generate_json($data);
+	}
+
+	public function numberPrefix() {
+		$data = array(
+			'networks' => $this->model->getLoadAllNetwork()->result()
+		);
+
+		$this->load->view('number-prefix', $data);
+	}
+
+	public function loadPrefix() {
+		$getLoadPrefix = $this->model->getLoadPrefix();
+
+		$data = array(
+			'result' => $getLoadPrefix->result()
+		);
+
+		generate_json($data);
+	}
+
+	public function addPrefix() {
+		$prefixName = sanitize($this->input->post('prefixName'));
+		$networkId = sanitize($this->input->post('networkId'));
+
+
+		$getAddPrefix = $this->model->getAddPrefix($prefixName, $networkId);
+
+		$data = array(
+			'success' => 1
+		);
+
+		generate_json($data);
+	}
+
+	public function editPrefix() {
+		$editId = sanitize($this->input->post('editId'));
+		$netPrefix = sanitize($this->input->post('netPrefix'));
+		$netId = sanitize($this->input->post('netId'));
+
+		$getEditPrefix = $this->model->getEditPrefix($editId, $netPrefix, $netId);
+
+		$data = array(
+			'success' => 1
+		);
+
+		generate_json($data);
+	}
+
+	public function deletePrefix() {
+		$deleteId = sanitize($this->input->post('deleteId'));
+
+		$getDeletePrefix = $this->model->getDeletePrefix($deleteId);
+
+		$data = array(
+			'success' => 1
+		);
+
+		generate_json($data);
+	}
+	
 }

@@ -27,7 +27,7 @@
 							</div>
 							<div class="col-md-9 padLeft0 pad0">
 								<div class="form-group">
-									<input type="number" class="form-control mobileNo" name="mobileNo" disabled placeholder="Enter 7 digits number" min="0">
+									<input type="text" class="form-control mobileNo" onkeypress="return checkNumeric()" name="mobileNo" disabled placeholder="Enter 7 digits number">
 								</div>
 							</div>
 						</div>

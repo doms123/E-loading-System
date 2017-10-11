@@ -22,9 +22,21 @@ header h1 {
 	display: inline-block;
 }
 
+.mt15 {
+	margin-top: 15px;
+}
+
+.mb5 {
+	margin-bottom: 5px;
+}
+
+.mb30 {
+	margin-bottom: 30px !important;
+}
+
 .headTxt {
 	position: relative;
-    top: -10px;
+    top: -5px;
     padding-left: 10px;
 }
 
@@ -197,7 +209,7 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
 }
 
 h1 .logo {
-	font-size: 42px;
+	font-size: 25px;
 }
 
 /* active state */
@@ -230,7 +242,7 @@ input:focus ~ .highlight {
     left: 0;
     right: 0;
     margin: auto;
-    position: absolute;
+    position: fixed;
 }
 
 .jq-icon-error {
@@ -314,6 +326,10 @@ input:focus ~ .highlight {
 	display: none;
 }
 
+.close {
+	cursor: pointer;
+}
+
 .table thead {
 	background: #1976d2;
 	color: #fff;
@@ -341,6 +357,10 @@ input:focus ~ .highlight {
 
 .upperFirst {
 	text-transform:capitalize;
+}
+
+.fwBold {
+	font-weight: bold;
 }
 
 .reqLoadAmount,
@@ -390,13 +410,28 @@ input:focus ~ .highlight {
 	padding: 100px 20px 0 275px;
 }
 
-.loadReqArea h3 {
+.networkArea .addBtn {
+	position: absolute !important;
+	right: 0;
+	top: -42px;
+}
+
+.usersArea h3,
+.loadReqArea h3,
+.networkArea h3,
+.adminDashboard h3 {
 	font-size: 24px;
 	margin-bottom: 10px;
 }
 
+.networkArea {
+	max-width: 1000px !important;
+}
+
 .loadReqArea table tr th:last-child,
-.loadReqArea table tr td:last-child {
+.loadReqArea table tr td:last-child,
+.networkArea table tr th:last-child,
+.networkArea table tr td:last-child {
 	text-align: center;
 }
 
@@ -413,16 +448,21 @@ input:focus ~ .highlight {
 	background: #1976d2;
 }
 
+.networkArea .btn,
 .loadReqArea .btnComplete {
 	font-size: 12px;
 	position: relative;
+}
+
+.btn-danger.focus, .btn-danger:focus {
+    box-shadow: none;
 }
 
 .table thead th {
 	border-bottom: none;
 }
 
-table.dataTable {
+table {
 	box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
 }
 
@@ -479,14 +519,14 @@ table.dataTable {
 
 	.mobileMenu {
 		display: inline-block;
-		color: #fff;
-		position: absolute;
-		top: 12px;
-		right: 15px;
-		font-size: 35px;
-		margin: 0;
-		padding: 0;
-		cursor: pointer;
+	    color: #fff;
+	    position: absolute;
+	    top: 8px;
+	    right: 15px;
+	    font-size: 27px;
+	    margin: 0;
+	    padding: 0;
+	    cursor: pointer;
 	}
 
 	.mobileMenu:hover {
@@ -506,7 +546,7 @@ table.dataTable {
 	}
 
 	.loadingForm {
-		padding-top: 62px;
+		padding-top: 45px;
 	}
 	
 	.loginForm h3,
@@ -549,7 +589,7 @@ table.dataTable {
 	}
 
 	.loginArea, .signUpArea {
-		padding-top: 62px;
+		padding-top: 45px;
 	}
 
 	.loginArea .compCardloading h3,
@@ -662,7 +702,7 @@ table.dataTable {
     top: 0;
     bottom: 0;
     box-shadow: 3px 0 6px rgba(0,0,0,.24);
-    margin-top: 72px;
+    margin-top: 55px;
 }
 
 #sidebar.active {
@@ -689,7 +729,9 @@ table.dataTable {
 	position: relative;
 }
 
-.requestSearch {
+.requestSearch,
+.userSearch,
+.networkSearch {
 	position: absolute;
 	max-width: 200px;
 	width: 100%;
@@ -762,13 +804,22 @@ a.article, a.article:hover {
 .adminBody {
 	background: #fafafa;
 }
+
+.usersBody tr th:last-child, 
+.usersBody tr td:last-child {
+	text-align: left;
+}
+
+.networkArea .table-responsive tr td:last-child .btnEdit {
+	margin-right: 10px;
+}
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
 @media (max-width: 767px) {
     #sidebar {
-        margin-left: -250px;
-        margin-top: 62px;
+        margin-left: -260px;
+        margin-top: 45px;
     }
     #sidebar.active {
         margin-left: 0;
@@ -776,4 +827,153 @@ a.article, a.article:hover {
     #sidebarCollapse span {
         display: none;
     }
+
+
+    #sidebar.open {
+        margin-left: 0;
+    }
+
+    .contentArea {
+        padding: 42px 0 0 0;
+    }
+
+    .contentArea h3 {
+		font-size: 16px !important;
+	    color: #fff;
+	    margin-bottom: 60px;
+	    padding: 15px;
+	    background: #1976d2;
+    }
+
+    #sidebar {
+    	z-index: 99;
+    }
+}
+
+
+@media (max-width: 991px) {
+	.transactionWrap .table-responsive {
+	    display: table;
+	}
+}
+
+@media (max-width: 480px) {
+	.transactionWrap .table-responsive {
+	    display: block;
+	}
+
+	.networkArea tr th:first-child,
+	.networkArea tr td:first-child {
+		display: none;
+	}
+
+	.requestSearch, .userSearch, .networkSearch {
+		position: absolute;
+		max-width: 200px;
+		width: calc(100% - 30px);
+		max-width: 100%;
+		right: 15px;
+		top: 102px;
+		left: 15px;
+	}
+
+	.table-responsive {
+	    width: calc(100% - 30px);
+	    margin: 0 15px;
+	}
+
+	.table-responsive tr th,
+	.table-responsive tr td {
+		font-size: 12px;
+		line-height: 1.4;
+		padding: 3px 10px;
+	}
+
+	.networkArea .table-responsive tr th:last-child {
+		width: 50px;
+	}
+	.networkArea .table-responsive {
+		display: table;
+	}
+
+	.networkArea .table-responsive tr td:last-child button {
+		padding: 5px;
+		width: 100%;
+		display: block;
+	}
+
+	.networkArea .table-responsive tr th, .networkArea .table-responsive tr td {
+	    padding: 10px;
+	}
+
+	.networkArea .table-responsive tr th {
+    	padding: 10px;
+	}
+
+	.networkArea .table-responsive tr td:last-child .btnEdit {
+		margin-bottom: 10px;
+	}
+
+	.networkArea .table-responsive {
+		margin-bottom: 30px;
+	}
+
+	.networkArea .addBtn {
+		right: 15px;
+	}
+
+	.modal-dialog {
+	    position: relative;
+	    width: auto;
+	    margin: 20% 15px 0;
+	}
+}
+
+@media (max-width: 900px) and (min-width: 768px) {
+	.table-responsive tr th,
+	.table-responsive tr td {
+		font-size: 12px;
+		line-height: 1.4;
+		padding: 5px 10px;
+	}
+
+	.table-responsive .btn {
+		padding: 7px;
+	}
+
+	.contentArea {
+	    padding: 100px 15px 0 265px;
+	}
+
+	.requestSearch, .userSearch, .networkSearch {
+		right: 15px;
+	}
+}
+
+@media (min-width: 768px) {
+	.networkArea table {
+		display: table;
+	}
+}
+
+@media (max-width: 767px) and (min-width: 481px) {
+	.table-responsive {
+		display: table;
+		margin: 0 15px;
+		width: calc(100% - 30px);
+	}
+
+	.requestSearch, .userSearch, .networkSearch {
+	    right: 15px;
+	    top: 101px;
+	}
+
+	.networkArea .addBtn {
+		right: 15px;
+	}
+
+	.networkArea tr th:first-child,
+	.networkArea tr td:first-child {
+		display: none;
+	}
 }

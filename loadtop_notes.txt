@@ -20,3 +20,20 @@ https://www.codexworld.com/paypal-payment-gateway-integration-in-codeigniter/
 Reference Website
 http://easy-reload.com/
 
+www.000webhost.com
+user:loadtopup
+pass:loadpass123
+access
+email:loadtopup01@gmail.com
+pass: loadpass123
+
+database credential
+user: admin
+pass: admin
+
+database config
+DB Host: localhost
+DB Name: id3219189_eloaddb
+DB User: id3219189_admin
+DB Pass: admin
+

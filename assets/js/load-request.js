@@ -6,7 +6,6 @@ $(function() {
 	loadRequest();
 	function loadRequest() {
 		var requestSearch = $(".requestSearch").val();
-		console.log('requestSearch', requestSearch)
 		$.ajax({
 			type: 'POST',
 			url: baseUrl+'Main/viewRequest', 
@@ -37,7 +36,7 @@ $(function() {
 
 				
 
-				$('.table').DataTable();
+				// $('.table').DataTable();
 
 				if(maxLoop == 0) {
 					$(".dataTables_paginate").hide();
@@ -49,7 +48,6 @@ $(function() {
 	}
 
 	$(".requestSearch").keyup(function() {
-		console.log('typing')
 		loadRequest();
 	});
 
