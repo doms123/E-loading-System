@@ -38,7 +38,8 @@ class Main extends CI_Controller {
 		        'firstname'     => $userObj->firstname,
 		        'lastname'     	=> $userObj->lastname,
 		        'mobile'		=> $userObj->mobile,
-		        'isLoggedIn' 	=> true
+		        'isLoggedIn' 	=> true,
+		        'positionId'	=> $userObj->positionId
 			);
 
 			$this->session->set_userdata($userData);
@@ -60,6 +61,12 @@ class Main extends CI_Controller {
 
 	public function isLoggedIn() {
 		if($this->session->userdata('isLoggedIn') == false) {
+			header("location:/");
+		}
+	}
+
+	public function isAdminLoggedIn() {
+		if($this->session->userdata('positionId') != 1) {
 			header("location:/");
 		}
 	}
@@ -255,35 +262,63 @@ class Main extends CI_Controller {
 
 	public function loadTransaction() {
 		$userId = $this->session->userdata('userId');
-		$getLoadTransaction = $this->model->getLoadTransaction($userId);
+		$trasactionSearch = sanitize($this->input->post('trasactionSearch'));
+		$currentPage = sanitize($this->input->post('currentPage'));
+		$rowPerPage = sanitize($this->input->post('rowPerPage'));
+
+		$currentPage = $currentPage > 1 ? $currentPage : 0;
+		$currentPage = $currentPage * $rowPerPage;
+		if($currentPage > 10) {
+			$currentPage -= 10;
+		}
+
+
+
+		$getLoadTransaction = $this->model->getLoadTransaction($userId, $trasactionSearch, $currentPage, $rowPerPage);
 
 		$data = array(
-			'result' => $getLoadTransaction->result()
+			'result' => $getLoadTransaction->result(),
+			'entrieStart' => $currentPage + 1,
+			'entrieEnd' => $currentPage + 10
 		);
 
 		generate_json($data);
 	}
 
 	public function dashboardAdmin() {
+		$this->isAdminLoggedIn();
 		$this->load->view('dashboard-admin');
 	}
 
 	public function loadRequest() {
+		$this->isAdminLoggedIn();
 		$this->load->view('load-request');
 	}
 
 	public function viewRequest() {
-		$requestSearch = sanitize($this->input->post('requestSearch'));
-		$getLoadRequest = $this->model->getLoadRequest($requestSearch);
+		$currentPage 	= sanitize($this->input->post('currentPage'));
+		$rowPerPage 	= sanitize($this->input->post('rowPerPage'));
+		$requestSearch 	= sanitize($this->input->post('requestSearch'));
+
+		$currentPage = $currentPage > 1 ? $currentPage : 0;
+		$currentPage = $currentPage * $rowPerPage;
+		if($currentPage > 10) {
+			$currentPage -= 10;
+		}
+
+		$getLoadRequest = $this->model->getLoadRequest($requestSearch, $currentPage, $rowPerPage);
 
 		$data = array(
-			'result' => $getLoadRequest->result()
+			'result' => $getLoadRequest->result(),
+			'entrieStart' => $currentPage + 1,
+			'entrieEnd' => $currentPage + 10
 		);
 
 		generate_json($data);
 	}
 	
 	public function confirmRequest() {
+		$this->isAdminLoggedIn();
 		$requestId = sanitize($this->input->post('requestId'));
 		$getConfirmRequest = $this->model->getConfirmRequest($requestId);
 
@@ -295,7 +330,8 @@ class Main extends CI_Controller {
 	}
 
 	public function loadReqCount() {
-		$getLoadReqCount = $this->model->getLoadReqCount();
+		$requestSearch = sanitize($this->input->post('requestSearch'));
+		$getLoadReqCount = $this->model->getLoadReqCount($requestSearch);
 
 		$data = array(
 			'reqCount' => $getLoadReqCount->row()->reqCount
@@ -305,23 +341,35 @@ class Main extends CI_Controller {
 	}
 
 	public function users() {
+		$this->isAdminLoggedIn();
 		$this->load->view('users');
 	}
 
 	public function loadUsers() {
 		$userId = $this->session->userdata('userId');
 		$userSearch = sanitize($this->input->post('userSearch'));
+		$currentPage = sanitize($this->input->post('currentPage'));
+		$rowPerPage = sanitize($this->input->post('rowPerPage'));
 
-		$getLoadUsers = $this->model->getLoadUsers($userId, $userSearch);
+		$currentPage = $currentPage > 1 ? $currentPage : 0;
+		$currentPage = $currentPage * $rowPerPage;
+		if($currentPage > 10) {
+			$currentPage -= 10;
+		}
+		
+		$getLoadUsers = $this->model->getLoadUsers($userId, $userSearch, $currentPage, $rowPerPage);
 
 		$data = array(
-			'result' => $getLoadUsers->result()
+			'result' => $getLoadUsers->result(),
+			'entrieStart' => $currentPage + 1,
+			'entrieEnd' => $currentPage + 10
 		);
 
 		generate_json($data);
 	}
 
 	public function network() {
+		$this->isAdminLoggedIn();
 		$this->load->view('network');
 	}
 
@@ -373,6 +421,7 @@ class Main extends CI_Controller {
 	}
 
 	public function loadamount() {
+		$this->isAdminLoggedIn();
 		$this->load->view('loadamount');
 	}
 
@@ -424,6 +473,7 @@ class Main extends CI_Controller {
 	}
 
 	public function numberPrefix() {
+		$this->isAdminLoggedIn();
 		$data = array(
 			'networks' => $this->model->getLoadAllNetwork()->result()
 		);
@@ -480,5 +530,88 @@ class Main extends CI_Controller {
 
 		generate_json($data);
 	}
+
+	public function completeRequestCount() {
+		$completeSearch = sanitize($this->input->post('completeSearch'));
+		$getCompleteRequestCount = $this->model->getCompleteRequestCount($completeSearch);
+
+		$data = array(
+			'count' => $getCompleteRequestCount->row()->count,
+			'totalAmount' => $getCompleteRequestCount->row()->totalAmount
+		);
+
+		generate_json($data);
+	}
+
+	public function registeredUserCount() {
+		$userId = $this->session->userdata('userId');
+		$userSearch = sanitize($this->input->post('userSearch'));
+		$getRegisteredUserCount = $this->model->getRegisteredUserCount($userId, $userSearch);
+
+		$data = array(
+			'count' => $getRegisteredUserCount->row()->count
+		);
+
+		generate_json($data);
+	}
+
+	public function adminNetworkCount() {
+		$getAdminNetworkCount = $this->model->getAdminNetworkCount();
+
+		$data = array(
+			'count' => $getAdminNetworkCount->row()->count
+		);
+
+		generate_json($data);
+	}
+
+	public function adminLoadAmountCount() {
+		$adminLoadAmountCount = $this->model->adminLoadAmountCount();
+
+		$data = array(
+			'count' => $adminLoadAmountCount->row()->count
+		);
+
+		generate_json($data);
+	}
+
+	public function completeRequest() {
+		$this->isAdminLoggedIn();
+		$this->load->view('complete-request');
+	}
 	
+	public function viewCompleteRequest() {
+		$currentPage = sanitize($this->input->post('currentPage'));
+		$rowPerPage = sanitize($this->input->post('rowPerPage'));
+		$completeSearch = sanitize($this->input->post('completeSearch'));
+
+		$currentPage = $currentPage > 1 ? $currentPage : 0;
+		$currentPage = $currentPage * $rowPerPage;
+		if($currentPage > 10) {
+			$currentPage -= 10;
+		}
+
+		$getCompleteRequest = $this->model->getCompleteRequest($completeSearch, $currentPage, $rowPerPage);
+
+		$data = array(
+			'result' => $getCompleteRequest->result(),
+			'entrieStart' => $currentPage + 1,
+			'entrieEnd' => $currentPage + 10
+		);
+
+		generate_json($data);
+	}
+
+	public function transactCount() {
+		$userId = $this->session->userdata('userId');
+		$trasactionSearch = sanitize($this->input->post('trasactionSearch'));
+
+		$getTransactCount = $this->model->getTransactCount($userId, $trasactionSearch);
+
+		$data = array(
+			'count' => $getTransactCount->row()->count
+		);
+
+		generate_json($data);
+	}
 }

@@ -3,7 +3,7 @@
 	<form class="loadingForm" method="POST" action="<?php echo base_url('Main/buyLoad'); ?>">
 		<div class="compCardWidth">
 			<div class="compCard mb20">
-				<a href="#" class="btn btn-primary ripple dashNav"><i class="ion-clipboard"></i> <span>Transaction History</span></a>
+				<a href="#" class="btn btn-primary ripple dashNav transBtn"><i class="ion-clipboard"></i> <span>Transaction History</span></a>
 				<div class="compCardloading">
 					<h3>E-loading Form</h3>
 					<div class="pad15">
@@ -46,7 +46,13 @@
 			
 				<div class="transactionWrap">
 					<h3>Transaction History</h3>
-					<table class="table table-responsive">
+					<a href="#" class="btn btn-primary ripple dashNav pcDashNav"><i class="ion-android-system-back"></i> <span>Back</span></a>
+					<input type="text" class="form-control trasactionSearch" placeholder="Search Filter">
+					<nav aria-label="Page navigation" class="hidden topPaginition posRel">
+						<p class="entries">Showing <span class="entrieStart">1</span> to <span class="entrieEnd">10</span> of <span class="totalEntries"></span> entries</p>
+				        <ul class="pagination mt25 mb15" id="pagination"></ul>
+				    </nav>
+					<table class="table table-responsive userTransHistoryTbl">
 						<thead>
 							<tr>
 								<th>Network</th>
@@ -61,6 +67,10 @@
 							</tr>
 						</tbody>
 					</table>
+					<nav aria-label="Page navigation" class="posRel pcEntrieWrap">
+						<p class="entries">Showing <span class="entrieStart">1</span> to <span class="entrieEnd">10</span> of <span class="totalEntries"></span> entries</p>
+				        <ul class="pagination" id="pagination"></ul>
+				    </nav>
 				</div>
 			</div>
 		</div>

@@ -6,11 +6,11 @@
 	        <li>
 	            <a href="<?php echo base_url('Main/dashboardAdmin'); ?>">Dashboard</a>
 	        </li>
-	        <li class="active">
-	            <a href="javascript:void(0)">Load Request <span class="badge badge-danger loadReqCount">8</span></a>
-	        </li>
 	        <li>
-	            <a href="<?php echo base_url('Main/completeRequest'); ?>">Complete Request<span class="badge badge-danger loadCompleteCount">0</span></a>
+	            <a href="<?php echo base_url('Main/loadRequest'); ?>">Load Request <span class="badge badge-danger loadReqCount">8</span></a>
+	        </li>
+	        <li class="active">
+	            <a href="javascript:void(0)">Complete Request<span class="badge badge-danger loadCompleteCount">0</span></a>
 	        </li>
 	        <p>System Settings</p>
 			<li>
@@ -32,13 +32,13 @@
 	</nav>
 	<div class="contentArea">
 		<div>
-			<h3>Request List</h3>
-			<input type="text" class="form-control requestSearch" placeholder="Search Filter">
+			<h3>Completed Request List</h3>
+			<input type="text" class="form-control completeSearch" placeholder="Search Filter">
 			<nav aria-label="Page navigation" class="hidden topPaginition posRel">
 				<p class="entries">Showing <span class="entrieStart">1</span> to <span class="entrieEnd">10</span> of <span class="totalEntries"></span> entries</p>
 		        <ul class="pagination mt25 mb15" id="pagination"></ul>
 		    </nav>
-			<table class="table table-responsive specialPad mt45">
+			<table class="table table-responsive mb30 tableComplete mt45">
 				<thead>
 					<tr>
 						<th>Network</th>
@@ -46,42 +46,22 @@
 						<th>Load Amount</th>
 						<th>Name</th>
 						<th>Date</th>
-						<th>Action</th>
 					</tr>
 				</thead>
-				<tbody class="requestBody">
+				<tbody class="completeBody">
 					<tr>
 						<td colspan="6">loading . . .</td>
 					</tr>
 				</tbody>
 			</table>
+			<div class="totalWrap tRight fwb"><span class="inner">Total Load Amount: <span class="grandTotal">2000</span></span></div>
 			<nav aria-label="Page navigation" class="posRel pcEntrieWrap">
 				<p class="entries">Showing <span class="entrieStart">1</span> to <span class="entrieEnd">10</span> of <span class="totalEntries"></span> entries</p>
-		        <ul class="pagination" id="pagination"></ul>
+		        <ul class="pagination mt25" id="pagination"></ul>
 		    </nav>
 		</div>
 	</div>
 </section>
 
-<div class="modal fade" id="requestCompleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Request Completed Confirmation</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-       	<p>Are you sure do you want to complete the <span class="reqLoadAmount">loading . . .</span> load request of <span class="reqUser upperFirst">loading . . .</span>?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary ripple fsize12 confirmBtn"><i class="ion-checkmark-circled"></i> &nbsp;Confirm</button>
-        <button type="button" class="btn btn-primary ripple fsize12" data-dismiss="modal"><i class="ion-close-circled"></i> &nbsp;Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <?php $this->load->view('includes/footer'); ?>
-<script src="<?php echo base_url('assets/js/load-request.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/complete-request.js'); ?>"></script>

@@ -49,26 +49,34 @@ class Model extends CI_Model {
 	 	return $this->db->insert_id();
 	}
 
-	public function getLoadTransaction($userId) {
+	public function getLoadTransaction($userId, $trasactionSearch, $currentPage, $rowPerPage) {
 		$sql = "SELECT p.mobileno, p.loadAmount, n.netName, DATE_FORMAT(p.paymentDate, '%b. %e %Y') AS dateAdded
 				FROM tbl_payment p 
 				INNER JOIN tbl_user u ON u.userId = p.senderUserId
 				INNER JOIN tbl_network n 
 				ON n.networkId = p.networkId
-				WHERE senderUserId = ?
-				ORDER BY paymentDate DESC";
+				WHERE senderUserId = ?";
+
+				if($trasactionSearch != "") {
+					$sql .= " AND (p.mobileno LIKE '%$trasactionSearch%' 
+							  OR p.loadAmount LIKE '%$trasactionSearch%'
+							  OR n.netName LIKE '%$trasactionSearch%'
+							  OR p.paymentDate LIKE '%$trasactionSearch%')
+					";
+				}
+
+		$sql .= "ORDER BY p.paymentId DESC LIMIT $currentPage, $rowPerPage";
 		$data = array($userId);
 		return $this->db->query($sql, $data);
 	}
 
-	public function getLoadRequest($requestSearch) {
-
+	public function getLoadRequest($requestSearch, $currentPage, $rowPerPage) {
 		$sql = "SELECT p.mobileno, p.loadAmount, n.netName, u.firstname, u.lastname, p.paymentId, DATE_FORMAT(p.paymentDate, '%b. %e %Y') AS dateAdded
 				FROM tbl_payment p 
 				INNER JOIN tbl_user u ON u.userId = p.senderUserId
 				INNER JOIN tbl_network n
 				ON n.networkId = p.networkId
-				WHERE p.paymentStatus = 1";
+				WHERE p.paymentStatus = 1 ";
 
 		if($requestSearch != '') {
 			$sql .= " AND n.netName LIKE '%$requestSearch%'
@@ -79,9 +87,7 @@ class Model extends CI_Model {
 					  OR DATE_FORMAT(p.paymentDate, '%b. %e %Y') LIKE '%$requestSearch%' ";
 		}
 
-		$sql .= " ORDER BY paymentDate DESC";
-		// echo $sql;
-		// die();
+		$sql .= " ORDER BY paymentId DESC LIMIT $currentPage, $rowPerPage ";
 		return $this->db->query($sql);
 	}
 
@@ -91,25 +97,22 @@ class Model extends CI_Model {
 		return $this->db->query($sql, $data);
 	}
 
-	public function getLoadReqCount() {
-		$sql = "SELECT COUNT(paymentId) as reqCount FROM tbl_payment WHERE paymentStatus = ?";
-		$data = array(1);
-		return $this->db->query($sql, $data);
-	}
-
-	public function getLoadUsers($userId, $userSearch) {
-		$sql = "SELECT email, firstname, lastname, mobile, address, DATE_FORMAT(dateAdded, '%b. %e %Y') AS dateRegistered FROM tbl_user WHERE userId != ? AND isActive = 1 ";
-
-		if($userSearch != '') {
-			$sql .= " AND (firstname LIKE '%$userSearch%' 
-					  OR lastname LIKE '%$userSearch%'
-					  OR email LIKE '%$userSearch%'
-					  OR mobile LIKE '%$userSearch%'
-					  OR address LIKE '%$userSearch%'
-					  OR DATE_FORMAT(dateAdded, '%b. %e %Y') LIKE '%$userSearch%')
-					  ";
+	public function getLoadReqCount($requestSearch) {
+		$sql = "SELECT COUNT(paymentId) AS reqCount
+				FROM tbl_payment p 
+				INNER JOIN tbl_user u ON u.userId = p.senderUserId
+				INNER JOIN tbl_network n
+				ON n.networkId = p.networkId
+				WHERE p.paymentStatus = 1 ";
+		if($requestSearch != '') {
+			$sql .= " AND n.netName LIKE '%$requestSearch%'
+					  OR p.mobileno LIKE '%$requestSearch%' 
+					  OR  p.loadAmount LIKE '%$requestSearch%' 
+					  OR u.firstname LIKE '%$requestSearch%'
+					  OR u.lastname LIKE '%$requestSearch%' 
+					  OR DATE_FORMAT(p.paymentDate, '%b. %e %Y') LIKE '%$requestSearch%' ";
 		}
-		$data = array($userId);
+		$data = array(1);
 		return $this->db->query($sql, $data);
 	}
 
@@ -180,5 +183,115 @@ class Model extends CI_Model {
 		$sql = "UPDATE tbl_netprefix SET isActive = ? WHERE netprefixId = ?";
 		$data = array(0, $deleteId);
 		$this->db->query($sql, $data);
+	}
+
+	public function getRegisteredUserCount($userId, $userSearch) {
+		$sql = "SELECT COUNT(userId) as count FROM tbl_user WHERE isActive = ? AND userId != ?";
+
+		if($userSearch != '') {
+			$sql .= " AND (firstname LIKE '%$userSearch%' 
+					  OR lastname LIKE '%$userSearch%'
+					  OR email LIKE '%$userSearch%'
+					  OR mobile LIKE '%$userSearch%'
+					  OR address LIKE '%$userSearch%'
+					  OR DATE_FORMAT(dateAdded, '%b. %e %Y') LIKE '%$userSearch%')
+					  ";
+		}
+
+		$data = array(1, $userId);
+		return $this->db->query($sql, $data);
+	}
+
+	public function getAdminNetworkCount() {
+		$sql = "SELECT COUNT(networkId) as count FROM tbl_network WHERE netIsActive = ?";
+		$data = array(1);
+		return $this->db->query($sql, $data);
+	}
+
+	public function adminLoadAmountCount() {
+		$sql = "SELECT COUNT(loadAmountId) as count FROM tbl_loadamount WHERE isActive = ?";
+		$data = array(1);
+		return $this->db->query($sql, $data);
+	}
+
+
+	public function getCompleteRequest($completeSearch, $currentPage, $rowPerPage) {
+		$sql = "SELECT p.mobileno, p.loadAmount, n.netName, u.firstname, u.lastname, p.paymentId, DATE_FORMAT(p.paymentDate, '%b. %e %Y') AS dateAdded
+				FROM tbl_payment p 
+				INNER JOIN tbl_user u ON u.userId = p.senderUserId
+				INNER JOIN tbl_network n
+				ON n.networkId = p.networkId
+				WHERE p.paymentStatus = 2";
+
+		if($completeSearch != '') {
+			$sql .= " AND (n.netName LIKE '%$completeSearch%'
+					  OR p.mobileno LIKE '%$completeSearch%' 
+					  OR  p.loadAmount LIKE '%$completeSearch%' 
+					  OR u.firstname LIKE '%$completeSearch%'
+					  OR u.lastname LIKE '%$completeSearch%' 
+					  OR DATE_FORMAT(p.paymentDate, '%b. %e %Y') LIKE '%$completeSearch%') ";
+		}
+
+		$sql .= " ORDER BY paymentDate DESC LIMIT $currentPage, $rowPerPage";
+		return $this->db->query($sql);
+	}
+
+	public function getCompleteRequestCount($completeSearch) {
+		$sql = "SELECT COUNT(p.paymentId) as count, SUM(p.loadAmount) as totalAmount
+				FROM tbl_payment p 
+				INNER JOIN tbl_user u ON u.userId = p.senderUserId
+				INNER JOIN tbl_network n
+				ON n.networkId = p.networkId
+				WHERE p.paymentStatus = 2";
+
+		if($completeSearch != '') {
+			$sql .= " AND (n.netName LIKE '%$completeSearch%'
+					  OR p.mobileno LIKE '%$completeSearch%' 
+					  OR  p.loadAmount LIKE '%$completeSearch%' 
+					  OR u.firstname LIKE '%$completeSearch%'
+					  OR u.lastname LIKE '%$completeSearch%' 
+					  OR DATE_FORMAT(p.paymentDate, '%b. %e %Y') LIKE '%$completeSearch%') ";
+		}
+		$data = array(2);
+		return $this->db->query($sql, $data);
+	}
+
+	public function getLoadUsers($userId, $userSearch, $currentPage, $rowPerPage) {
+		$sql = "SELECT email, firstname, lastname, mobile, address, DATE_FORMAT(dateAdded, '%b. %e %Y') AS dateRegistered FROM tbl_user WHERE userId != ? AND isActive = 1 ";
+
+		if($userSearch != '') {
+			$sql .= " AND (firstname LIKE '%$userSearch%' 
+					  OR lastname LIKE '%$userSearch%'
+					  OR email LIKE '%$userSearch%'
+					  OR mobile LIKE '%$userSearch%'
+					  OR address LIKE '%$userSearch%'
+					  OR DATE_FORMAT(dateAdded, '%b. %e %Y') LIKE '%$userSearch%')
+					  ";
+		}
+		
+		$sql .= " ORDER BY dateAdded DESC LIMIT $currentPage, $rowPerPage";
+		$data = array($userId);
+		return $this->db->query($sql, $data);
+	}
+
+	public function getTransactCount($userId, $trasactionSearch) {
+		$sql = "SELECT COUNT(paymentId) as count
+				FROM tbl_payment p 
+				INNER JOIN tbl_user u ON u.userId = p.senderUserId
+				INNER JOIN tbl_network n 
+				ON n.networkId = p.networkId
+				WHERE senderUserId = ?";
+
+				if($trasactionSearch != "") {
+					$sql .= " AND (p.mobileno LIKE '%$trasactionSearch%' 
+							  OR p.loadAmount LIKE '%$trasactionSearch%'
+							  OR n.netName LIKE '%$trasactionSearch%'
+							  OR p.paymentDate LIKE '%$trasactionSearch%')
+					";
+				}
+
+		$sql .= "ORDER BY paymentDate DESC";
+		$data = array($userId);
+		return $this->db->query($sql, $data);
 	}
 }

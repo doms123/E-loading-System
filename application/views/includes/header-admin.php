@@ -7,7 +7,6 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/dataTables.bootstrap4.min.css'); ?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/reset.css'); ?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/ionicons.min.css'); ?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/style.css'); ?>">

@@ -1,5 +1,79 @@
 $(function() {
+	var rowPerPage = 10;
+	var currentPage = 1;
+	var totalPage = 0; 
+	var visiblePages = 0;
+
 	$('[data-toggle="tooltip"]').tooltip();
+
+	$.when(transactCount(), loadTransaction()).done(function(){
+  		window.pagObj = $('.pagination').twbsPagination({
+  		    totalPages: totalPage,
+  		    visiblePages: visiblePages,
+  		    onPageClick: function (event, page) {
+  		        currentPage = page;
+  		        loadTransaction();
+  		    }
+  		});
+	});
+
+	function transactCount() {
+		var trasactionSearch = $(".trasactionSearch").val();
+		return $.ajax({
+			type: 'POST',
+			url: baseUrl + 'Main/transactCount',
+			data: {'trasactionSearch': trasactionSearch},
+			success: function(data) {
+				console.log('data.count', data.count)
+				$(".totalEntries").html(data.count);
+				totalPage = Math.ceil(parseInt(data.count) / rowPerPage); // new
+				if(data.count >= totalPage) {
+					visiblePages = 3;
+				}
+			}
+		});
+	}
+
+	function loadTransaction() {
+		var trasactionSearch = $(".trasactionSearch").val();
+		return $.ajax({
+			type: 'POST',
+			url: baseUrl+'Main/loadTransaction', 
+			crossDomain:true, 
+			data: {'trasactionSearch': trasactionSearch, 'currentPage': currentPage, 'rowPerPage': rowPerPage},
+			success : function(data) {
+				$(".entrieStart").html(data.entrieStart); // new
+				
+				if(totalPage == currentPage) {  // new
+					var entrieEnd = data.entrieStart + data.result.length - 1;
+					$(".entrieEnd").html(entrieEnd);
+				}else {
+					$(".entrieEnd").html(data.entrieEnd);
+				}
+			
+				var data = data.result;
+				var maxLoop = data.length;
+				var html = "";
+
+				for(x = 0; x < maxLoop; x++) {
+					html += '<tr>';
+						html += '<td>'+data[x].netName+'</td>';
+						html += '<td>'+data[x].mobileno+'</td>';
+						html += '<td>'+numberWithCommas(data[x].loadAmount)+'</td>';
+						html += '<td>'+data[x].dateAdded+'</td>';
+					html += '</tr>';
+				}
+
+				if(maxLoop > 0) {
+					$(".historyBody").html(html);
+					$(".entries").show(); // new
+				}else {
+					$(".entries").hide(); // new
+					$(".historyBody").html('<td colspan="4">No transaction history yet.</td>');
+				}
+			}
+		});
+	}
 
 	function getParam( name ) {
 	 name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
@@ -17,24 +91,24 @@ $(function() {
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 
-	$(".loadingForm").fadeIn(800);
+	$(".loadingForm").show();
 
 	var toggleNav = false;
 	$(".dashNav").click(function() {
 		toggleNav = !toggleNav;
-		console.log(toggleNav);
 
 		if(toggleNav) { // transaction history
-			$(this).find('i').attr('class', 'ion-android-system-back');
-			$(this).find('span').text('Back');
+			if($(window).width() < 768) {
+				$(".userBack").show();
+			}
+			$(".transBtn").hide();
 			$(".compCardloading").hide();
-			$(".transactionWrap").fadeIn(800);
-			loadTransaction();
+			$(".transactionWrap").show();
 		}else {
-			$(this).find('i').attr('class', 'ion-clipboard');
-			$(this).find('span').text('Transaction History');
+			$(".userBack").hide();
+			$(".transBtn").show();
 			$(".transactionWrap").hide();
-			$(".compCardloading").fadeIn(800);
+			$(".compCardloading").show();
 		}
 	});
 
@@ -76,22 +150,23 @@ $(function() {
 	});
 
 	$(".mobileNo").keyup(function() {
-		if($(this).val().length >= 7) {
-			var inputVal = $(this).val();
-			var result = inputVal.substring(0, 7);
-			$(this).val(result);
+		var mobile = $(this).val();
+			if($(this).val().length >= 7) {
+				var inputVal = $(this).val();
+				var result = inputVal.substring(0, 7);
+				$(this).val(result);
 
-			$(".amount").attr('disabled', false);
+				$(".amount").attr('disabled', false);
 
-			if($(".amount").val() != null) {
-				$(".btnReload").attr('disabled', false);
-			}else {
-				$(".btnReload").attr('disabled', true);
+				if($(".amount").val() != null) {
+					$(".btnReload").attr('disabled', false);
+				}else {
+					$(".btnReload").attr('disabled', true);
+				}
+			}else if($(this).val().length < 7) {
+				$(".amount").attr('disabled', true);
+				$(".amount option[value='0']").prop('selected', true);
 			}
-		}else if($(this).val().length < 7) {
-			$(".amount").attr('disabled', true);
-			$(".amount option[value='0']").prop('selected', true);
-		}
 	});
 
 	$(".amount").change(function() {
@@ -106,43 +181,20 @@ $(function() {
 		$(this).find('i').attr('class', 'ion-loading-a');
 	});
 
-	loadTransaction();
-	function loadTransaction() {
-		$.ajax({
-			type: 'POST',
-			url: baseUrl+'Main/loadTransaction', 
-			crossDomain:true, 
-			success : function(data) {
-				console.log('data', data);
-				var data = data.result;
-				var maxLoop = data.length;
-				var html = "";
+	$(".trasactionSearch").keyup(function() {
+		transactCount()
+		loadTransaction();
 
-				for(x = 0; x < maxLoop; x++) {
-					html += '<tr>';
-						html += '<td>'+data[x].netName+'</td>';
-						html += '<td>'+data[x].mobileno+'</td>';
-						html += '<td>'+numberWithCommas(data[x].loadAmount)+'</td>';
-						html += '<td>'+data[x].dateAdded+'</td>';
-					html += '</tr>';
-				}
-
-				if(maxLoop > 0) {
-					$(".historyBody").html(html);
-				}else {
-					$(".historyBody").html('<td colspan="4">No transaction history yet.</td>');
-				}
-
-				
-
-				$('.table').DataTable();
-
-				if(maxLoop == 0) {
-					$(".dataTables_paginate").hide();
-				}else {
-					$(".dataTables_paginate").show();
-				}
-			}
+		$.when(transactCount(), loadTransaction()).done(function(){
+	    	$('.pagination').twbsPagination('destroy');
+	  		window.pagObj = $('.pagination').twbsPagination({
+	  		    totalPages: totalPage,
+	  		    visiblePages: visiblePages,
+	  		    onPageClick: function (event, page) {
+	  		        currentPage = page;
+	  		        loadTransaction();
+	  		    }
+	  		});
 		});
-	}
+	});
 });

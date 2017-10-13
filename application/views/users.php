@@ -9,9 +9,12 @@
 	        <li>
 	            <a href="<?php echo base_url('Main/loadRequest'); ?>">Load Request <span class="badge badge-danger loadReqCount">8</span></a>
 	        </li>
+	        <li>
+	            <a href="<?php echo base_url('Main/completeRequest'); ?>">Complete Request<span class="badge badge-danger loadCompleteCount">0</span></a>
+	        </li>
 	        <p>System Settings</p>
 			<li class="active">
-	            <a href="<?php echo base_url('Main/users'); ?>">Users</a>
+	            <a href="javascript:void(0)">Users</a>
 	        </li>
 	        <li>
 	            <a href="<?php echo base_url('Main/network'); ?>">Network Telecom</a>
@@ -31,7 +34,11 @@
 		<div>
 			<h3>Users List</h3>
 			<input type="text" class="form-control userSearch" placeholder="Search Filter">
-			<table class="table table-responsive">
+			<nav aria-label="Page navigation" class="hidden topPaginition posRel">
+				<p class="entries">Showing <span class="entrieStart">1</span> to <span class="entrieEnd">10</span> of <span class="totalEntries"></span> entries</p>
+		        <ul class="pagination mt25 mb15" id="pagination"></ul>
+		    </nav>
+			<table class="table table-responsive mt45">
 				<thead>
 					<tr>
 						<th>Full name</th>
@@ -47,6 +54,11 @@
 					</tr>
 				</tbody>
 			</table>
+
+			<nav aria-label="Page navigation" class="posRel pcEntrieWrap">
+				<p class="entries">Showing <span class="entrieStart">1</span> to <span class="entrieEnd">10</span> of <span class="totalEntries"></span> entries</p>
+		        <ul class="pagination" id="pagination"></ul>
+		    </nav>
 		</div>
 	</div>
 </section>

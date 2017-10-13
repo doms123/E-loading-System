@@ -41,7 +41,7 @@
 						<button type="submit" class="btn btn-primary btn-block btnLogin ripple">Login</button>
 					</div>
 				</div>
-				<div class="alert alert-danger hidden" role="alert">
+				<div class="alert alert-danger hidden customAlert" role="alert">
 				  <i class="ion-alert-circled"></i> Invalid Email or Password
 				</div>
 			</div>
