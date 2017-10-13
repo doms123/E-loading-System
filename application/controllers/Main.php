@@ -61,7 +61,13 @@ class Main extends CI_Controller {
 
 	public function isLoggedIn() {
 		if($this->session->userdata('isLoggedIn') == false) {
-			header("location:/");
+			if($this->session->userdata('positionId') != 1) {
+				header("location:/");
+			}
+		}else {
+			if($this->session->userdata('positionId') == 1) {
+				header("location:/Main/dashboardAdmin");
+			}
 		}
 	}
 
