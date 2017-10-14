@@ -7,6 +7,7 @@ visit url = https://www.paypal.com/signin
 Paypal Personal Account
 email: loadtopup01@gmail.com
 pass: Loadpass123!
+after you loggedin visit this = https://developer.paypal.com/
 
 Business / Receiver
 email: loadtopup01-facilitator01@gmail.com
