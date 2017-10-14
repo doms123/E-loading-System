@@ -2,6 +2,8 @@ GMAIL Account
 email:loadtopup01@gmail.com
 pass: loadpass123
 
+Paypal Dev Website login
+visit url = https://www.paypal.com/signin
 Paypal Personal Account
 email: loadtopup01@gmail.com
 pass: Loadpass123!
